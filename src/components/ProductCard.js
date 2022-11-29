@@ -1,10 +1,12 @@
 import React from "react";
-import { BiListPlus } from "react-icons/bi";
+import { BiListPlus, BiTrash } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 import { useProducts } from "../context/ProductProvider";
 import { actionTypes } from "../state/ProductState/actionTypes";
 
 const ProductCard = ({ product }) => {
-  const { dispatch } = useProducts();
+  const location = useLocation();
+  const { state, dispatch } = useProducts();
 
   return (
     <div
@@ -41,6 +43,17 @@ const ProductCard = ({ product }) => {
         >
           <BiListPlus className='text-white' />
         </button>
+        {
+          location.pathname === "/cart" && state.cart.length &&
+          <button
+          title='Remove from cart'
+          className='bg-indigo-500  py-1 px-2 rounded-full'
+          onClick={() =>
+            dispatch({ type: actionTypes.REMOVE_FROM_CART, payload: product._id })
+          }
+        >
+          <BiTrash className='text-white' />
+        </button>}
       </div>
     </div>
   );
